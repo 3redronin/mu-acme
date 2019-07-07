@@ -60,7 +60,7 @@ public class AcmeCertManagerTest {
         try (Response resp = call(request(server.uri()))) {
             assertThat(resp.body().string(), equalTo("Hello from HTTPS"));
         }
-        assertThat(certInformation(server.uri()), containsString("Subject: CN=Su Merver"));
+        assertThat(certInformation(server.uri()), containsString("CN=Mu Server Test Cert"));
     }
 
     @Test

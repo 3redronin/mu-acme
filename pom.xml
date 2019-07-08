@@ -16,18 +16,18 @@
     </properties>
 
     <scm>
-        <url>https://github.com/3redronin/mu-server</url>
-        <connection>scm:git:git@github.com:3redronin/mu-server.git</connection>
+        <url>https://github.com/3redronin/mu-acme</url>
+        <connection>scm:git:git@github.com:3redronin/mu-acme.git</connection>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/3redronin/mu-server/issues</url>
+        <url>https://github.com/3redronin/mu-acme/issues</url>
     </issueManagement>
 
     <ciManagement>
         <system>travis-ci</system>
-        <url>https://travis-ci.org/3redronin/mu-server</url>
+        <url>https://travis-ci.org/3redronin/mu-acme</url>
     </ciManagement>
 
 

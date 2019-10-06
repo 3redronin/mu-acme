@@ -159,7 +159,6 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         }
         log.info("Using " + Mutils.fullPath(certFile));
         return SSLContextBuilder.sslContext()
-            .withProtocols("TLSv1.2")
             .withKeyManagerFactory(
                 PemSslContextFactory.getKeyManagerFactory(certFile, domainKeyFile)
             );

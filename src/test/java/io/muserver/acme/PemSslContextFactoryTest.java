@@ -1,7 +1,7 @@
 package io.muserver.acme;
 
+import io.muserver.HttpsConfigBuilder;
 import io.muserver.MuServer;
-import io.muserver.SSLContextBuilder;
 import okhttp3.Response;
 import org.junit.After;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class PemSslContextFactoryTest {
         KeyManagerFactory keyManagerFactory = PemSslContextFactory.getKeyManagerFactory(certFile, keyFile);
 
         server = httpsServer()
-            .withHttpsConfig(SSLContextBuilder.sslContext().withKeyManagerFactory(keyManagerFactory))
+            .withHttpsConfig(HttpsConfigBuilder.httpsConfig().withKeyManagerFactory(keyManagerFactory))
             .addHandler((req, resp) -> {
                 resp.write("Hello");
                 return true;

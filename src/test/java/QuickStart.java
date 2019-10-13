@@ -1,5 +1,8 @@
-import io.muserver.*;
-import io.muserver.acme.*;
+import io.muserver.Method;
+import io.muserver.MuServer;
+import io.muserver.MuServerBuilder;
+import io.muserver.acme.AcmeCertManager;
+import io.muserver.acme.AcmeCertManagerBuilder;
 import io.muserver.handlers.HttpsRedirectorBuilder;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +21,7 @@ public class QuickStart {
         MuServer server = MuServerBuilder.muServer()
             .withHttpPort(80)
             .withHttpsPort(443)
-            .withHttpsConfig(certManager.createSSLContext())
+            .withHttpsConfig(certManager.createHttpsConfig())
             .addHandler(certManager.createHandler())
             .addHandler(isLocal ? null :
                 HttpsRedirectorBuilder.toHttpsPort(443)

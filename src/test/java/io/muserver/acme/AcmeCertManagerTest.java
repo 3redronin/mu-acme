@@ -50,7 +50,7 @@ public class AcmeCertManagerTest {
             .build();
 
         server = MuServerBuilder.httpsServer()
-            .withHttpsConfig(certManager.createSSLContext())
+            .withHttpsConfig(certManager.createHttpsConfig())
             .addHandler(certManager.createHandler())
             .addHandler(Method.GET, "/", (request, response, pathParams) -> {
                 response.write("Hello from HTTPS");
@@ -71,7 +71,7 @@ public class AcmeCertManagerTest {
             .build();
 
         server = MuServerBuilder.httpsServer()
-            .withHttpsConfig(certManager.createSSLContext())
+            .withHttpsConfig(certManager.createHttpsConfig())
             .addHandler(certManager.createHandler())
             .addHandler(Method.GET, "/", (request, response, pathParams) -> {
                 response.write("Hello from HTTPS");
@@ -112,6 +112,7 @@ public class AcmeCertManagerTest {
         noOp.start(null);
         noOp.createHandler();
         noOp.createSSLContext();
+        noOp.createHttpsConfig();
     }
 
     private static String certInformation(URI uri) throws Exception{

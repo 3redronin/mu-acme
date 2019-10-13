@@ -1,9 +1,6 @@
 package io.muserver.acme;
 
-import io.muserver.MuHandler;
-import io.muserver.MuServer;
-import io.muserver.Mutils;
-import io.muserver.SSLContextBuilder;
+import io.muserver.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
@@ -97,7 +94,7 @@ class AcmeCertManagerImpl implements AcmeCertManager {
             throw new IllegalStateException("Renewal can only occur after the start(MuServer) method is called");
         }
         acquireCert();
-        muServer.changeSSLContext(createSSLContext());
+        muServer.changeHttpsConfig(createHttpsConfig());
         log.info("Mu Server HTTPS cert updated");
     }
 
@@ -150,18 +147,22 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         log.info("Cert written to " + Mutils.fullPath(certFile) + " and it expires on " + cert.getCertificate().getNotAfter());
     }
 
-
     @Override
-    public synchronized SSLContextBuilder createSSLContext() throws Exception {
+    public HttpsConfigBuilder createHttpsConfig() throws Exception {
         if (!certFile.isFile()) {
             log.info("No cert available yet. Using self-signed cert.");
-            return SSLContextBuilder.unsignedLocalhostCertBuilder();
+            return HttpsConfigBuilder.unsignedLocalhost();
         }
         log.info("Using " + Mutils.fullPath(certFile));
-        return SSLContextBuilder.sslContext()
+        return HttpsConfigBuilder.httpsConfig()
             .withKeyManagerFactory(
                 PemSslContextFactory.getKeyManagerFactory(certFile, domainKeyFile)
             );
+    }
+
+    @Override
+    public synchronized SSLContextBuilder createSSLContext() throws Exception {
+        return createHttpsConfig();
     }
 
 

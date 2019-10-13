@@ -1,10 +1,9 @@
 package io.muserver.acme;
 
+import io.muserver.HttpsConfigBuilder;
 import io.muserver.MuHandler;
 import io.muserver.MuServer;
 import io.muserver.SSLContextBuilder;
-
-import javax.net.ssl.SSLContext;
 
 class NoOpAcmeCertManager implements AcmeCertManager {
     @Override
@@ -22,6 +21,11 @@ class NoOpAcmeCertManager implements AcmeCertManager {
     @Override
     public SSLContextBuilder createSSLContext() {
         return SSLContextBuilder.unsignedLocalhostCertBuilder();
+    }
+
+    @Override
+    public HttpsConfigBuilder createHttpsConfig() {
+        return HttpsConfigBuilder.unsignedLocalhost();
     }
 
     @Override

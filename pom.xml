@@ -6,7 +6,7 @@
 
     <groupId>io.muserver</groupId>
     <artifactId>mu-acme</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <name>mu-acme</name>
     <description>A library to make Mu Server work with LetsEncrypt and other ACME HTTPS certificate providers</description>
     <url>https://github.com/3redronin/mu-acme</url>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>io.muserver</groupId>
             <artifactId>mu-server</artifactId>
-            <version>0.41.1</version>
+            <version>0.44.0</version>
         </dependency>
         <dependency>
             <groupId>org.shredzone.acme4j</groupId>
@@ -108,7 +108,7 @@
             <plugin>
                 <groupId>com.github.danielflower.mavenplugins</groupId>
                 <artifactId>multi-module-maven-release-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.2.0</version>
                 <configuration>
                     <releaseProfiles>
                         <releaseProfile>release</releaseProfile>

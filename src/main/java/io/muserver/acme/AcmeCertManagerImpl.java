@@ -136,7 +136,7 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         login = session.login(account.getLocation(), keyPair);
         log.info("Logged in with " + login.getAccount().getLocation());
         Order order = orderCert();
-        waitUntilValid("Waiting for certificate order", order::getStatus, () -> {
+        waitUntilValid(order,"Waiting for certificate order", order::getStatus, () -> {
             order.update();
             return null;
         });
@@ -212,7 +212,7 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         currentContent = challenge.getAuthorization();
         challenge.trigger();
 
-        waitUntilValid("Waiting for authorization challenge to complete", auth::getStatus, () -> {
+        waitUntilValid(null, "Waiting for authorization challenge to complete", auth::getStatus, () -> {
             auth.update();
             return null;
         });
@@ -220,12 +220,13 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         currentToken = null;
     }
 
-    private static void waitUntilValid(String description, Callable<Status> getStatus, Callable<Void> update) throws Exception {
+    private static void waitUntilValid(Order reasonGiver, String description, Callable<Status> getStatus, Callable<Void> update) throws Exception {
         Status curStatus;
         int maxAttempts = 100;
         while ((curStatus = getStatus.call()) != Status.VALID) {
             if (curStatus == Status.INVALID) {
-                throw new CertificateOrderException(description + " but status is INVALID. Aborting attempt.");
+                String reason = reasonGiver == null ? "" : " Reason is: " + reasonGiver;
+                throw new CertificateOrderException(description + " but status is INVALID. Aborting attempt." + reason);
             }
             log.info(description + ". Current status is " + curStatus);
             Thread.sleep(3000L);

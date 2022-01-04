@@ -5,6 +5,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeRetryAfterException;
+import org.shredzone.acme4j.toolbox.JSON;
 import org.shredzone.acme4j.util.CSRBuilder;
 import org.shredzone.acme4j.util.KeyPairUtils;
 import org.slf4j.Logger;
@@ -136,7 +137,10 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         login = session.login(account.getLocation(), keyPair);
         log.info("Logged in with " + login.getAccount().getLocation());
         Order order = orderCert();
-        waitUntilValid(order,"Waiting for certificate order", order::getStatus, () -> {
+        waitUntilValid("Waiting for certificate order", order::getStatus, () -> {
+            JSON error = order.getJSON();
+            return error == null ? "No data returned from server" : "Data returned from server: " + error;
+        }, () -> {
             order.update();
             return null;
         });
@@ -212,20 +216,23 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         currentContent = challenge.getAuthorization();
         challenge.trigger();
 
-        waitUntilValid(null, "Waiting for authorization challenge to complete", auth::getStatus, () -> {
-            auth.update();
-            return null;
-        });
+        waitUntilValid("Waiting for authorization challenge to complete", auth::getStatus,
+            () -> "Auth data: " + auth.getJSON() + " / challenge data: " + challenge.getJSON(),
+            () -> {
+                auth.update();
+                return null;
+            });
         currentContent = null;
         currentToken = null;
     }
 
-    private static void waitUntilValid(Order reasonGiver, String description, Callable<Status> getStatus, Callable<Void> update) throws Exception {
+    private static void waitUntilValid(String description, Callable<Status> getStatus, Callable<String> problem, Callable<Void> update) throws Exception {
         Status curStatus;
         int maxAttempts = 100;
         while ((curStatus = getStatus.call()) != Status.VALID) {
             if (curStatus == Status.INVALID) {
-                String reason = reasonGiver == null ? "" : " Reason is: " + reasonGiver;
+                String prob = problem.call();
+                String reason = prob == null ? "" : " Reason: " + prob;
                 throw new CertificateOrderException(description + " but status is INVALID. Aborting attempt." + reason);
             }
             log.info(description + ". Current status is " + curStatus);

@@ -24,14 +24,17 @@ jobs:
               "id": "ossrh",
               "username": "${{ secrets.OSSRH_USERNAME }}",
               "password": "${{ secrets.OSSRH_TOKEN }}"
-            }]
+            },
+              "id": "gpg.passphrase",
+              "passphrase": "${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}"
+            ]
       - name: Verify package
         run: mvn --batch-mode verify
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release package
-        run: mvn --batch-mode -DskipTests=true -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} releaser:release
+        run: mvn --batch-mode -DskipTests=true releaser:release
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

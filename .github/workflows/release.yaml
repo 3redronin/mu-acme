@@ -1,6 +1,6 @@
 name: Publish package to the Maven Central Repository
 on:
-  push
+  workflow_dispatch
 
 jobs:
   publish:

@@ -26,12 +26,12 @@ jobs:
               "password": "${{ secrets.OSSRH_TOKEN }}"
             }]
       - name: Verify package
-        run: mvn --no-transfer-progress --batch-mode verify
+        run: mvn --batch-mode verify
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Release package
-        run: mvn --no-transfer-progress --batch-mode -DskipTests=true -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} releaser:release
+        run: mvn --batch-mode -DskipTests=true -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} releaser:release
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

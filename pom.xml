@@ -113,10 +113,6 @@
                     <releaseProfiles>
                         <releaseProfile>release</releaseProfile>
                     </releaseProfiles>
-                    <goals>
-                        <goal>clean</goal>
-                        <goal>deploy</goal>
-                    </goals>
                 </configuration>
             </plugin>
             <plugin>

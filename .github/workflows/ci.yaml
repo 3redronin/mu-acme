@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
+          distribution: 'temurin'
 
       - name: Build with Maven on JDK ${{ matrix.java }}
         run: mvn --no-transfer-progress --batch-mode --update-snapshots site verify

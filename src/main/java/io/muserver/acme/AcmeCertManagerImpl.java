@@ -5,6 +5,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeRetryAfterException;
+import org.shredzone.acme4j.exception.AcmeServerException;
 import org.shredzone.acme4j.toolbox.JSON;
 import org.shredzone.acme4j.util.CSRBuilder;
 import org.shredzone.acme4j.util.KeyPairUtils;
@@ -136,7 +137,12 @@ class AcmeCertManagerImpl implements AcmeCertManager {
             .create(session);
         login = session.login(account.getLocation(), keyPair);
         log.info("Logged in with " + login.getAccount().getLocation());
-        Order order = orderCert();
+        Order order;
+        try {
+            order = orderCert();
+        } catch (AcmeServerException e) {
+            throw new CertificateOrderException("Could not order certificate", e);
+        }
         waitUntilValid("Waiting for certificate order", order::getStatus, () -> {
             JSON error = order.getJSON();
             return error == null ? "No data returned from server" : "Data returned from server: " + error;

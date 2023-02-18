@@ -7,6 +7,7 @@ import okhttp3.Response;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.acme4j.exception.AcmeServerException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;

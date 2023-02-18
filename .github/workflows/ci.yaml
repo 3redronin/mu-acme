@@ -25,4 +25,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven on JDK ${{ matrix.java }}
-        run: mvn --no-transfer-progress --batch-mode --update-snapshots site verify
+        run: mvn --batch-mode verify

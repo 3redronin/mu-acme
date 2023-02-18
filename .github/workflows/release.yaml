@@ -25,9 +25,10 @@ jobs:
               "username": "${{ secrets.OSSRH_USERNAME }}",
               "password": "${{ secrets.OSSRH_TOKEN }}"
             },
+            {
               "id": "gpg.passphrase",
               "passphrase": "${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}"
-            ]
+            }]
       - name: Verify package
         run: mvn --batch-mode verify
         env:

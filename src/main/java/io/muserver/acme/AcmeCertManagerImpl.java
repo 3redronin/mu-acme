@@ -71,7 +71,7 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         executorService.scheduleAtFixedRate(() -> {
                 try {
                     acquireCertIfNeeded();
-                } catch (AcmeServerException coe) {
+                } catch (CertificateOrderException coe) {
                     log.warn(coe.getMessage());
                 } catch (Exception e) {
                     log.warn("Error while checking HTTPS cert renewal status", e);
@@ -137,7 +137,12 @@ class AcmeCertManagerImpl implements AcmeCertManager {
             .create(session);
         login = session.login(account.getLocation(), keyPair);
         log.info("Logged in with " + login.getAccount().getLocation());
-        Order order = orderCert();
+        Order order;
+        try {
+            order = orderCert();
+        } catch (AcmeServerException e) {
+            throw new CertificateOrderException("Could not order certificate", e);
+        }
         waitUntilValid("Waiting for certificate order", order::getStatus, () -> {
             JSON error = order.getJSON();
             return error == null ? "No data returned from server" : "Data returned from server: " + error;

@@ -99,7 +99,7 @@ public class AcmeCertManagerTest {
         try {
             certManager.acquireCertIfNeeded();
             Assert.fail("Acquiring a cert shouldn't work here");
-        } catch (AcmeServerException ignored) {
+        } catch (CertificateOrderException ignored) {
             // Good!
         } finally {
             certManager.stop();

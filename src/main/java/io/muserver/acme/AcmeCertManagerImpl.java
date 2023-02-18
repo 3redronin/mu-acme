@@ -5,6 +5,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeRetryAfterException;
+import org.shredzone.acme4j.exception.AcmeServerException;
 import org.shredzone.acme4j.toolbox.JSON;
 import org.shredzone.acme4j.util.CSRBuilder;
 import org.shredzone.acme4j.util.KeyPairUtils;
@@ -70,7 +71,7 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         executorService.scheduleAtFixedRate(() -> {
                 try {
                     acquireCertIfNeeded();
-                } catch (CertificateOrderException coe) {
+                } catch (AcmeServerException coe) {
                     log.warn(coe.getMessage());
                 } catch (Exception e) {
                     log.warn("Error while checking HTTPS cert renewal status", e);

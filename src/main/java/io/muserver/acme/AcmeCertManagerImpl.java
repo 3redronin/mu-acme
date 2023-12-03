@@ -171,12 +171,6 @@ class AcmeCertManagerImpl implements AcmeCertManager {
     }
 
     @Override
-    public synchronized SSLContextBuilder createSSLContext() throws Exception {
-        return createHttpsConfig();
-    }
-
-
-    @Override
     public MuHandler createHandler() {
         return (request, response) -> {
             String token = currentToken;

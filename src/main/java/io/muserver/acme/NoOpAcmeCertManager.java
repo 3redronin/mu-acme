@@ -3,7 +3,6 @@ package io.muserver.acme;
 import io.muserver.HttpsConfigBuilder;
 import io.muserver.MuHandler;
 import io.muserver.MuServer;
-import io.muserver.SSLContextBuilder;
 
 class NoOpAcmeCertManager implements AcmeCertManager {
     @Override
@@ -16,11 +15,6 @@ class NoOpAcmeCertManager implements AcmeCertManager {
 
     @Override
     public void forceRenew() {
-    }
-
-    @Override
-    public SSLContextBuilder createSSLContext() {
-        return SSLContextBuilder.unsignedLocalhostCertBuilder();
     }
 
     @Override

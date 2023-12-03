@@ -21,7 +21,10 @@ public class AcmeCertManagerBuilder {
     private String state;
     private boolean useNoOp = false;
 
+    private AcmeCertManagerBuilder() {}
+
     /**
+     * Builds the manager
      * @return Returns a manager that can create and renew HTTPS certificates.
      * @throws IllegalStateException Thrown if no config dir, ACME server, or domain name is set.
      */
@@ -139,6 +142,7 @@ public class AcmeCertManagerBuilder {
     }
 
     /**
+     * Creates a manager builder
      * @return Returns a new builder.
      */
     public static AcmeCertManagerBuilder acmeCertManager() {
@@ -146,6 +150,7 @@ public class AcmeCertManagerBuilder {
     }
 
     /**
+     * Creates a manager builder configured to use Let's Encrypt
      * @return Returns a new cert manager builder using Let's Encrypt.
      */
     public static AcmeCertManagerBuilder letsEncrypt() {
@@ -153,6 +158,7 @@ public class AcmeCertManagerBuilder {
     }
 
     /**
+     * Creates a manager builder configured to use Let's Encrypt's staging environment
      * @return Returns a new cert manager builder using the Let's Encrypt staging environment.
      */
     public static AcmeCertManagerBuilder letsEncryptStaging() {
@@ -160,6 +166,7 @@ public class AcmeCertManagerBuilder {
     }
 
     /**
+     * Creates a builder that does nothing
      * @return Returns a builder that will do nothing. Useful for local development.
      */
     public static AcmeCertManagerBuilder noOpManager() {

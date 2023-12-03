@@ -64,7 +64,8 @@ public interface AcmeCertManager {
     MuHandler createHandler();
 
     /**
-     * @return Returns the current version of MuServer, or 0.x if unknown
+     * Gets the version of this library
+     * @return Returns the current version of mu-acme, or 0.x if unknown
      */
     static String artifactVersion() {
         try {

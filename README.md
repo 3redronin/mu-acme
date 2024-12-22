@@ -17,14 +17,14 @@ Once DNS config is complete, the rest can be handled in code. Add dependencies o
 
 ````xml
 <dependency>
-    <groupId>io.muserver</groupId>
-    <artifactId>mu-server</artifactId>
-    <version>RELEASE</version>
+    <groupId>io.muserver</groupId>
+    <artifactId>mu-server</artifactId>
+    <version>RELEASE</version>
 </dependency>
 <dependency>
-    <groupId>io.muserver</groupId>
-    <artifactId>mu-acme</artifactId>
-    <version>RELEASE</version>
+    <groupId>io.muserver</groupId>
+    <artifactId>mu-acme</artifactId>
+    <version>RELEASE</version>
 </dependency>
 ````
 
@@ -37,6 +37,7 @@ import io.muserver.acme.*;
 public class QuickStart {
     
     public static void main(String[] args) throws Exception {
+        Security.addProvider(new BouncyCastleProvider());
         
         AcmeCertManager certManager = AcmeCertManagerBuilder.letsEncryptStaging()
             .withDomain("your-domain.example.org")

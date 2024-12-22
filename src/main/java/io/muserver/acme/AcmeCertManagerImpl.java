@@ -20,6 +20,7 @@ import java.net.URI;
 import java.security.KeyPair;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -203,12 +204,13 @@ class AcmeCertManagerImpl implements AcmeCertManager {
         if (organization != null) csrb.setOrganization(organization);
         csrb.sign(domainKeyPair);
         byte[] csr = csrb.getEncoded();
+        order.waitUntilReady(Duration.ofMinutes(1));
         order.execute(csr);
         return order;
     }
 
     private void processAuth(Authorization auth) throws Exception {
-        Http01Challenge challenge = auth.findChallenge(Http01Challenge.TYPE);
+        Http01Challenge challenge = (Http01Challenge) auth.findChallenge(Http01Challenge.TYPE).orElse(null);
         if (challenge == null) {
             throw new RuntimeException("Could not create cert as no HTTP01 auth was available");
         }
